@@ -12,20 +12,13 @@ student_marks = [
     2,
     5
 ]
+student_2_marks = [
+    4,
+    3,
+    5,
+    5,
+    4
+]
 
-# lesson_dates_and_mark = [
-#     ['19.05.15', 5],
-#     ['19.05.17', 4],
-#     ['19.05.18', 3],
-#     ['19.05.19', 2],
-#     ['19.05.22', 5],
-# ]
-
-# for i, mark in enumerate(student_marks):
-#     print(lesson_dates[i], 'оценка', mark)
-
-# for lesson_dates, mark in lesson_dates_and_mark:
-#     print(lesson_dates, 'оценка', mark)
-
-for lesson_dates, mark in zip(lesson_dates, student_marks):
-    print(lesson_dates, 'оценка', mark)
+for lesson_dates, mark, mark_2 in zip(lesson_dates, student_marks, student_2_marks):
+    print(lesson_dates, 'оценка', mark, mark_2)
