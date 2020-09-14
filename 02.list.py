@@ -1,9 +1,9 @@
 # data read
 # student_marks = []
 # while True:
-#     mark = input('Введите оценку студента:\t')
+#     mark = input('Введите оценку студента:\n')
 #     if mark:
-#         student_marks.append(mark)
+#         student_marks.append(int(mark))
 #     else:
 #         break
 # print('Ввод завершен')
