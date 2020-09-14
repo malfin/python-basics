@@ -9,7 +9,10 @@ print(mock_student_marks.count(5))
 print(mock_student_marks.count(2))
 # print(mock_student_marks.count(15))
 # print(mock_student_marks.index(15))
-if mock_student_marks.count(15):
-    print('15 index', mock_student_marks.index(15))
-if mock_student_marks.count(5):
-    print('5 index', mock_student_marks.index(5))
+num = 2  # abstraction concrete number -> var num
+if mock_student_marks.count(num):
+    print(num, 'found', mock_student_marks.count(num), 'times, first index', mock_student_marks.index(num))
+else:
+    print(num, 'not found')
+# if mock_student_marks.count(5):
+#     print('5 index', mock_student_marks.index(5))
