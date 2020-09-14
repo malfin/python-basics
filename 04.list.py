@@ -7,11 +7,10 @@ lesson_dates = [
 ]
 student_marks = [5, 4, 3, 2, 5]
 
-# len(student_marks) -> 5
-i = 0
-while i < len(student_marks):
-    # i == 0 < 5 -> True ?
-    # i == 1 < 5 -> True ?
-    # i -> 5, == 5 < 5 -> False ?
-    print(lesson_dates[i], 'оценка', student_marks[i])
-    i += 1  # i = 1
+# i = 0
+# while i < len(student_marks):
+#     print(lesson_dates[i], 'оценка', student_marks[i])
+#     i += 1  # i = 1
+
+for mark in student_marks:
+    print('оценка', mark)
