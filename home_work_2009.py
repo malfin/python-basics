@@ -10,6 +10,7 @@ while True:
             print('Введите оценку от 1 до 5!')
             student_marks.remove(int(mark))
         elif int(mark) == 0:
+            print('Введите оценку от 1 до 5!')
             student_marks.remove(int(mark))
     else:
         break
