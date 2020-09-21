@@ -1,15 +1,24 @@
-say = 'Hello World!'
-print(say)
+a = 'всем привет'
+# print(dir(a), '\n', type(a))
+print(a.isdigit())
+b = '15.7'
+print(b.isdigit())
 
-say_2 = say.upper()
-print(say_2)
+c = '157'
+print(c.isdigit())
 
-say_3 = say.capitalize()
-print(say_3)
+d = '15e6'
+print(d.isdigit())
 
-#
-# 1. Добавить к алгоритму вычислению среднего балла проверку,
-# чтобы оценка была в диапазоне от 1 до 5.
-# 2. Вывести оценки студентов за конкретную дату
-# (всё что есть, "Введите дату\n", после этого вывести оценку за эту дату)
-# 3. Изучить методы строк в Python. Написать пару примеров использования.
+r = '15e6'
+print(r.isdigit())
+
+avg_mark = input('введите средний балл студента:\n')
+# if avg_mark.isdigit():
+#     avg_mark = float(avg_mark)
+#     print('ввод корректен', type(avg_mark))
+try:
+    avg_mark = float(avg_mark)
+    print('ввод корректен', type(avg_mark))
+except ValueError as e:
+    print('некоррентное значение', avg_mark, e)
