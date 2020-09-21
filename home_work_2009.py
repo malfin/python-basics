@@ -54,9 +54,17 @@ for lesson_dates, mark, mark_2 in zip(lesson_dates, student_marks, student_2_mar
     print(lesson_dates, 'оценка', mark, mark_2)
 date = input('Введите дату:\n')
 
-date_index = lesson_dates.index(date)
-print(date_index)
-print('оценки студентов за ', lesson_dates[date_index], ':', student_marks[date_index], student_2_marks[date_index])
+if lesson_dates.count(date):
+    date_index = lesson_dates.index(date)
+    print('оценки студентов за ', lesson_dates[date_index], ':', student_marks[date_index], student_2_marks[date_index])
+else:
+    print('ошибка даты:', date)
+#
+# try:
+#
+# except Exception as e:
+#     print('Error: ', e)
+
 #
 # say = 'Hello World!'
 # print(say, len(say))
