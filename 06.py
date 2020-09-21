@@ -9,7 +9,7 @@ while True:
     # if not 48 <= ord(mark) <= 57:
     #     print('вы ввели не число!')
     #     continue
-    try:
+    if mark.isdigit():  # - проверяет от 0 до 9
         mark = int(mark)
         if 1 <= mark <= 5:
             student_marks.append(mark)
@@ -17,6 +17,16 @@ while True:
             print('Оценка больше 5!')
         elif mark < 1:
             print('Оценка меньше 1')
-    except Exception as e:  # ловит все ошибки
-        print('Была допущена ошибка:', e)
+    else:
+        print('Ошибка:', mark)
+    # try:
+    #     mark = int(mark)
+    #     if 1 <= mark <= 5:
+    #         student_marks.append(mark)
+    #     elif mark > 5:
+    #         print('Оценка больше 5!')
+    #     elif mark < 1:
+    #         print('Оценка меньше 1')
+    # except Exception as e:  # ловит все ошибки
+    #     print('Была допущена ошибка:', e)
 print('ввод завершен', student_marks)
