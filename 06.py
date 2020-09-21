@@ -18,5 +18,5 @@ while True:
         elif mark < 1:
             print('Оценка меньше 1')
     except Exception as e:
-        print('была допущена ошибка:', e)
+        print('Была допущена ошибка:', e)
 print('ввод завершен', student_marks)
