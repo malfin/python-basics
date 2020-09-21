@@ -17,6 +17,6 @@ while True:
             print('Оценка больше 5!')
         elif mark < 1:
             print('Оценка меньше 1')
-    except Exception as e:
+    except Exception as e:  # ловит все ошибки
         print('Была допущена ошибка:', e)
 print('ввод завершен', student_marks)
