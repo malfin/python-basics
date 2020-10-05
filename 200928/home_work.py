@@ -8,7 +8,7 @@ with open("student_log's.txt", 'r', encoding='utf-8') as f:
         while i < l:
             s_int = ''
             a = list[i]
-            if '0' <= a <= '9':
+            if '0' < a <= '5':
                 s_int += a
                 i += 1
                 if i < l:
