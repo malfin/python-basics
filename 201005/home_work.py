@@ -14,6 +14,7 @@ class Student:
         self.mark = None
         self.home_work = None
         self.teacher = None
+        self.number_phone = None
 
 
 class Teacher:
@@ -30,6 +31,7 @@ class StudyGroup:
         self.id_students = None
         self.room = None
         self.teacher = None
+        self.number_phone = None
 
 
 class College:
