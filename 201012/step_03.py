@@ -1,12 +1,13 @@
+# n^2 -> n*log(n) or n or log(n)
+# = 100 -> log(100) = 2
+# n = 100 000 -> log(100 000) = 5
+# x1000 => x2.5
+
 nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-# # time complexity 0(n)
-# for i in range(len(nums)):
-#     current = nums[i]
-#     print(current)
-pass
-for i in range(len(nums)):  # n times
-    current = nums[i]
-    for j in range(i + 1):  # runs from 1 to n
-        print(nums[j], end=' | ')
-    print()
-# n^2 / 2 = 0.5 * n^2 -> n^2
+# memory complexity
+print(id(nums), nums)
+nums.reverse()
+print(id(nums), nums)
+nums_2 = list(reversed(nums))
+print(id(nums_2), nums_2)
+# memory leaks
