@@ -1,4 +1,5 @@
 import timeit
+import time
 
 name = 'иван'
 # заглавная первая буква, а-я,
@@ -50,8 +51,6 @@ for letter in name:
 
 print(timeit.timeit(to_measure_1, number=1000000, globals={'alphabet': alphabet, 'name': name}))
 print(timeit.timeit(to_measure_2, number=1000000, globals={'alphabet': alphabet, 'name': name}))
-
-import time
 
 start = time.perf_counter()
 for _ in range(1000000):
