@@ -1,5 +1,5 @@
 real_number = {chr(el) for el in range(ord('0'), ord('9') + 1)}
-real_number.update(['.'], [','])
+real_number.update(['.', ','])
 
 required_real_number = {'.'}
 
