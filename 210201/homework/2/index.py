@@ -29,4 +29,3 @@ def get_timetable(first_date):
 
 
 get_timetable('02.2020')
-
