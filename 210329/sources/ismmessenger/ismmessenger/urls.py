@@ -16,7 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from ismmessenger import settings
+
 urlpatterns = [
     path('', include('mainapp.urls', namespace='main')),
+    path('accounts/', include(('django.contrib.auth.urls', 'auth'), namespace='auth')),
     path('admin/', admin.site.urls),
 ]
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns.append(path('__debug__/', include(debug_toolbar.urls)))

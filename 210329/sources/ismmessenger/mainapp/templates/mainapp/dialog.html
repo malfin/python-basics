@@ -1,0 +1,21 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+    <h3 class="display-6">Диалог: {{ dialog }}</h3>
+    <ul class="list-group mb-3">
+        {% for item in dialog_members %}
+            <li class="list-group-item p-3"><a href="#">{{ item.member.username }}</a></li>
+        {% endfor %}
+    </ul>
+    {% for item in dialog_messages %}
+        <div class="card mt-3">
+            <div class="card-header">
+                {{ item.sender_member.username }} {{ item.created|date:"Y.m.d H:i" }}
+            </div>
+            <div class="card-body">
+                <p>{{ item.text }}</p>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+

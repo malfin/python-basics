@@ -1,0 +1,17 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+    <h3 class="display-6">Создание диалога</h3>
+    <div class="card">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form_2.as_p }}
+                <hr>
+                {{ form.as_p }}
+                <button class="btn btn-success mt-3">Отправить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+
