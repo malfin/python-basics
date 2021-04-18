@@ -1,10 +1,15 @@
 {% extends 'mainapp/base.html' %}
 {% block content %}
     <h3 class="display-6">Ваши Диалоги</h3>
+    {% for item in messages %}
+        <div class="alert alert-success" role="alert">
+            {{ item }}
+        </div>
+    {% endfor %}
     <div class="row mt-5">
         {% for item in dialogues %}
             <div class="col">
-                <a href="{% url 'mainapp:dialog' item.dialog_id %}" class="btn btn-primary">{{ item.dialog.name }}
+                <a href="{% url 'mainapp:dialog_show' item.dialog_id %}" class="btn btn-primary">{{ item.dialog.name }}
                     | {{ item.dialog.created }}</a>
             </div>
         {% endfor %}

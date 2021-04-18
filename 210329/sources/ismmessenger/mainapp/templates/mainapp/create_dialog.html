@@ -1,15 +1,19 @@
 {% extends 'mainapp/base.html' %}
 {% block content %}
     <h3 class="display-6">Создание диалога</h3>
+    {% for message in messages %}
+        <div class="alert alert-info" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+
     <div class="card">
         <div class="card-body">
-            <form method="POST">
-                {% csrf_token %}
-                {{ form_2.as_p }}
-                <hr>
-                {{ form.as_p }}
-                <button class="btn btn-success mt-3">Отправить</button>
-            </form>
+            {% for item in new_interlocutors %}
+                <a href="{% url 'main:user_dialog_create' item.pk %}">{{ item.username }}</a>
+            {% endfor %}
+
         </div>
     </div>
 {% endblock %}

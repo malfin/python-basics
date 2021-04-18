@@ -1,12 +1,12 @@
 from django import forms
 
-from mainapp.models import Dialog, DialogMemebers
+from mainapp.models import Message, DialogMemebers
 
 
-class DialogsCreate(forms.ModelForm):
+class MessageCreate(forms.ModelForm):
     class Meta:
-        model = Dialog
-        fields = ('name',)
+        model = Message
+        fields = ('text',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
