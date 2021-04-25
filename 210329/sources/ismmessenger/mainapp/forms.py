@@ -1,33 +1,17 @@
-from django import forms
+from django.forms import ModelForm, HiddenInput
 
-from mainapp.models import Message, DialogMemebers
+from mainapp.models import Message
 
 
-class MessageCreate(forms.ModelForm):
+class DialogMessageForm(ModelForm):
     class Meta:
         model = Message
-        fields = ('text',)
+        fields = ('sender', 'text')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for name, item in self.fields.items():
-            item.widget.attrs['class'] = f'form-control {name} form-control-lg mt-2'
-            item.widget.attrs['style'] = f'resize: none'
-            item.help_text = ''
-
-
-class Dialogs(forms.ModelForm):
-    class Meta:
-        model = DialogMemebers
-        fields = (
-            'dialog',
-            'member',
-            'role',
-        )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for name, item in self.fields.items():
-            item.widget.attrs['class'] = f'form-control {name} form-control-lg mt-2'
-            item.widget.attrs['style'] = f'resize: none'
-            item.help_text = ''
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = f'form-control form-control-lg mt-2'
+            field.widget.attrs['style'] = f'resize: none'
+            if field_name == 'sender':
+                field.widget = HiddenInput()

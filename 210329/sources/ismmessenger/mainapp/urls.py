@@ -26,6 +26,13 @@ urlpatterns = [
     path('dialog/create/', mainapp.create_dialog, name='create_dialog'),
     path('user/dialog/create/<int:user_id>/', mainapp.user_dialog_create,
          name='user_dialog_create'),
-    path('dialog/send/message/', mainapp.create_message, name='create_message'),
+
+    path('dialog/member/<int:sender_pk>/message/create/',
+         mainapp.DialogMessageCreate.as_view(),
+         name='dialog_message_create'),
+
+    # path('user/dialog/update/<int:user_id>/',
+    #      mainapp.dialog_show_update, name='dialog_show_update'),
+
     path('dialog/delete/message/<int:message_id>', mainapp.delete_dialog, name='delete_dialog'),
 ]

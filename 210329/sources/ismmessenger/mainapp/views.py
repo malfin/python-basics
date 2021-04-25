@@ -1,11 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.views.generic import CreateView
 
-from mainapp.forms import Dialogs, MessageCreate
+from mainapp.forms import DialogMessageForm
 from mainapp.models import Dialog, Message, DialogMemebers
 
 
@@ -22,18 +23,23 @@ def index(request):
 @login_required
 def dialog_show(request, dialog_pk):
     dialog = get_object_or_404(Dialog, pk=dialog_pk)
-    _dialog_members = DialogMemebers.objects.filter(dialog=dialog)
-    dialog_members = _dialog_members.exclude(member=request.user). \
-        select_related('member')
-    dialog_messages = Message.objects.filter(sender__in=_dialog_members). \
-        select_related('sender__member')
+    sender = dialog.get_sender(request.user.pk)
     context = {
         'title': 'Диалоги',
         'dialog': dialog,
-        'dialog_members': dialog_members,
-        'dialog_messages': dialog_messages,
+        'sender': sender,
     }
     return render(request, 'mainapp/dialog.html', context)
+
+
+# def dialog_show_update(request, dialog_pk):
+#     if request.is_ajax():
+#         dialog = get_object_or_404(Dialog, pk=dialog_pk)
+#         sender = dialog.get_sender(request.user.pk)
+#         return JsonResponse({
+#             'status': 'ok',
+#             'sender_id': sender,
+#         })
 
 
 @login_required
@@ -71,28 +77,30 @@ def user_dialog_create(request, user_id):
     )
 
 
-@login_required()
-def create_message(request):
-    if request.POST == "POST":
-        form = MessageCreate(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Вы успешно отправили сообщение!")
-            return HttpResponseRedirect(reverse('main:create_message'))
-    else:
-        form = MessageCreate()
-    context = {
-        'title': 'отправить сообщение',
-        'form': form,
-    }
-    print(form)
-    return render(request, 'mainapp/create_message.html', context)
+class DialogMessageCreate(CreateView):
+    model = Message
+    form_class = DialogMessageForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = context['form']
+        sender_pk = self.request.resolver_match.kwargs['sender_pk']
+        form.initial['sender'] = sender_pk
+
+        return context
+
+    def get_success_url(self):
+        return reverse(
+            'main:dialog_show',
+            kwargs={'dialog_pk': self.object.sender.dialog_id}
+        )
 
 
 @login_required()
 def delete_dialog(request, message_id):
-    item = Dialog.objects.get(id=message_id)
+    item = get_object_or_404(Dialog, id=message_id)
     item.delete()
     messages.success(request, "Вы успешно удалили диалог!")
-    return HttpResponseRedirect(reverse('main:index'))
-
+    return HttpResponseRedirect(
+        reverse('main:index')
+    )

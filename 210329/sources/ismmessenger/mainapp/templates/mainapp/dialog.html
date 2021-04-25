@@ -5,27 +5,37 @@
     <div class="row">
         <div class="col">
             <ul class="list-group mb-3">
-                {% for item in dialog_members %}
-                    <li class="list-group-item p-3"><a href="#">{{ item.member.username }}</a></li>
-                {% endfor %}
             </ul>
         </div>
         <div class="col">
-            <a href="{% url 'main:create_message' %}" class="btn btn-success">Отправить сообщение</a>
+            <a href="{% url 'mainapp:dialog_message_create' sender.id %}" class="btn btn-success">Отправить
+                сообщение</a>
+{#            <button class="btn btn-primary" type="button">Обновить</button>#}
+{#            <a href="{% url 'main:dialog_show_update' dialog.id %}" class="btn btn-primary">Обновить</a>#}
             <a href="{% url 'main:delete_dialog' dialog.id %}" class="btn btn-danger">Удалить</a>
         </div>
     </div>
 
-    {% for item in dialog_messages %}
-        <div class="card mt-3">
+    {% for item in dialog.get_messages_all %}
+        <div class="card mt-3" id="demo">
             <div class="card-header">
-                {{ item.sender_member.username }} {{ item.created|date:"Y.m.d H:i" }}
+                {{ item.sender.member.username }} {{ item.created }}
             </div>
             <div class="card-body">
-                <p>{{ item.text }}</p>
+                <p>{{ item.text|linebreaksbr }}</p>
             </div>
         </div>
     {% endfor %}
 {% endblock %}
 
-
+{#<script>#}
+{#    $('.btn-primary').on('click', function (e) {#}
+{#        e.preventDefault();#}
+{#        $.ajax({#}
+{#            url: e.target.href,#}
+{#            success: function () {#}
+{#                $('.card').update();#}
+{#            }#}
+{#        })#}
+{#    })#}
+{#</script>#}
