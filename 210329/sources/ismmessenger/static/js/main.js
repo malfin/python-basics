@@ -4,10 +4,6 @@ function messageRender(message) {
     let domMessage = $('.message-' + message.pk);
     let messageText;
     if (!domMessage.length) {
-        //<li class="message-{{ item.pk }}">
-        //     {{ item.sender.member.username }}
-        //     ({{ item.created|date:"Y.m.d H:i" }}) - {{ item.text }}
-        // </li>
         let newMessage = document.createElement('li');
         newMessage.classList.add('message-' + message.pk);
         // {{ item.sender.member.username }} {{ item.created }} | {{ item.text|linebreaksbr }}
@@ -15,8 +11,6 @@ function messageRender(message) {
         newMessage.innerHTML = messageText;
         let parent = $dialogMessagesDOM.find('.list-group');
         parent.prepend(newMessage);
-        // console.log('parent', parent);
-        // console.log('to render', message, newMessage, messageText);
     }
 }
 
@@ -28,17 +22,17 @@ window.onload = function () {
         $.ajax({
             url: e.target.href,
             success: function (response) {
-                // console.log(response);
                 let new_messages = response.new_messages
                 if (new_messages) {
                     new_messages.forEach(function (el, idx) {
-                        let message = messageRender(el);
-                        setTimeout(message, 5000);
-                        // messageRender(el);
+                        messageRender(el);
                     })
                 }
             }
         })
     })
-    setTimeout(message, 5000); // не работает...
+    // нажимает на кнопку "обновить" каждые 5 секунд
+    setInterval(function () {
+        $('.dialog-update').trigger("click");
+    }, 5000);
 }
