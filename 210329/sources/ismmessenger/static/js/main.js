@@ -9,7 +9,7 @@ function messageRender(message) {
         // {{ item.sender.member.username }} {{ item.created }} | {{ item.text|linebreaksbr }}
         messageText = message.username + " (" + message.created + ") | " + message.text;
         newMessage.innerHTML = messageText;
-        let parent = $dialogMessagesDOM.find('.list-group');
+        let parent = $dialogMessagesDOM.find('ul');
         parent.prepend(newMessage);
     }
 }
