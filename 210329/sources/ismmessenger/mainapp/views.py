@@ -32,16 +32,6 @@ def dialog_show(request, dialog_pk):
     return render(request, 'mainapp/dialog.html', context)
 
 
-# def dialog_show_update(request, dialog_pk):
-#     if request.is_ajax():
-#         dialog = get_object_or_404(Dialog, pk=dialog_pk)
-#         sender = dialog.get_sender(request.user.pk)
-#         return JsonResponse({
-#             'status': 'ok',
-#             'sender_id': sender,
-#         })
-
-
 @login_required
 def create_dialog(request):
     dialogues = request.user.dialogs.select_related('dialog').all(). \
@@ -94,6 +84,28 @@ class DialogMessageCreate(CreateView):
             'main:dialog_show',
             kwargs={'dialog_pk': self.object.sender.dialog_id}
         )
+
+
+def dialog_new_messages(request, dialog_pk):
+    if request.is_ajax():
+        dialog = Dialog.objects.filter(pk=dialog_pk).first()
+        status = False
+        new_messages = None
+        if dialog:
+            status = True
+            _new_messages = dialog.get_messages_new(request.user.pk)
+            # _new_messages.update(read=True)
+            # {{ item.sender.member.username }}
+            #                 ({{ item.created|date:"Y.m.d H:i" }}) - {{ item.text }}
+            new_messages = [{'pk': el.pk,
+                             'username': el.sender.member.username,
+                             'created': el.created.strftime('%Y.%m.%d %H:%M'),
+                             'text': el.text}
+                            for el in _new_messages]
+        return JsonResponse({
+            'status': status,
+            'new_messages': new_messages,
+        })
 
 
 @login_required()

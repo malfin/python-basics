@@ -10,19 +10,25 @@ class Dialog(models.Model):
     name = models.CharField(verbose_name='имя', max_length=64, blank=True)
 
     @cached_property
-    def get_all_members(self):
+    def all_members(self):
         return self.members.all()
 
     def get_messages_all(self):
-        return Message.objects.filter(sender__in=self.get_all_members). \
+        return Message.objects.filter(sender__in=self.all_members). \
             select_related('sender__member')
 
+    def get_messages_new(self, user_id=None):
+        result = self.get_messages_all().filter(read=False).order_by('created')
+        if user_id is None:
+            return result
+        return result.exclude(sender=self.get_sender(user_id))
+
     def get_sender(self, user_id):
-        return self.get_all_members.filter(member_id=user_id).first()
+        return self.all_members.filter(member_id=user_id).first()
 
     def __str__(self):
         members = User.objects.filter(
-            pk__in=self.get_all_members.values_list('member_id', flat=True)). \
+            pk__in=self.all_members.values_list('member_id', flat=True)). \
             values_list('username', flat=True)
         result = f'{self.created.strftime("%Y.%m.%d %H:%M")} ' \
                  f'({" - ".join(members)})'

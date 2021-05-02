@@ -7,35 +7,28 @@
             <ul class="list-group mb-3">
             </ul>
         </div>
-        <div class="col">
+        <div class="col dialog-messages">
             <a href="{% url 'mainapp:dialog_message_create' sender.id %}" class="btn btn-success">Отправить
                 сообщение</a>
-{#            <button class="btn btn-primary" type="button">Обновить</button>#}
-{#            <a href="{% url 'main:dialog_show_update' dialog.id %}" class="btn btn-primary">Обновить</a>#}
+            {#            <button class="btn btn-primary" type="button">Обновить</button>#}
+            <a href="{% url 'main:dialog_new_messages' dialog.id %}" class="btn btn-primary dialog-update">Обновить</a>
             <a href="{% url 'main:delete_dialog' dialog.id %}" class="btn btn-danger">Удалить</a>
         </div>
     </div>
-
+{#    {% for item in dialog.get_messages_all %}#}
+{#        <div class="card mt-3" id="demo">#}
+{#            <div class="card-header message-{{ item.pk }}">#}
+{#                {{ item.sender.member.username }} {{ item.created }}#}
+{#            </div>#}
+{#            <div class="card-body">#}
+{#                <p>{{ item.text|linebreaksbr }}</p>#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endfor %}#}
     {% for item in dialog.get_messages_all %}
-        <div class="card mt-3" id="demo">
-            <div class="card-header">
-                {{ item.sender.member.username }} {{ item.created }}
-            </div>
-            <div class="card-body">
-                <p>{{ item.text|linebreaksbr }}</p>
-            </div>
-        </div>
+        <ul class="list-group">
+            <li class="list-group-item mt-2 message-{{ item.pk }}">{{ item.sender.member.username }} ({{ item.created }})
+                | {{ item.text|linebreaksbr }}</li>
+        </ul>
     {% endfor %}
 {% endblock %}
-
-{#<script>#}
-{#    $('.btn-primary').on('click', function (e) {#}
-{#        e.preventDefault();#}
-{#        $.ajax({#}
-{#            url: e.target.href,#}
-{#            success: function () {#}
-{#                $('.card').update();#}
-{#            }#}
-{#        })#}
-{#    })#}
-{#</script>#}
