@@ -6,10 +6,9 @@ function messageRender(message) {
     if (!domMessage.length) {
         let newMessage = document.createElement('li');
         newMessage.classList.add('message-' + message.pk);
-        // {{ item.sender.member.username }} {{ item.created }} | {{ item.text|linebreaksbr }}
         messageText = message.username + " (" + message.created + ") | " + message.text;
         newMessage.innerHTML = messageText;
-        let parent = $dialogMessagesDOM.find('ul');
+        let parent = $dialogMessagesDOM.find('.messages-list');
         parent.prepend(newMessage);
     }
 }
@@ -17,7 +16,8 @@ function messageRender(message) {
 
 window.onload = function () {
     console.log('ready');
-    $('.dialog-messages').on('click', 'a.dialog-update', function (e) {
+    $dialogMessagesDOM = $('.dialog-messages');
+    $dialogMessagesDOM.on('click', 'a.dialog-update', function (e) {
         e.preventDefault();
         $.ajax({
             url: e.target.href,
@@ -25,13 +25,13 @@ window.onload = function () {
                 let new_messages = response.new_messages
                 if (new_messages) {
                     new_messages.forEach(function (el, idx) {
+                        // console.log(idx, el);
                         messageRender(el);
                     })
                 }
             }
         })
     })
-    // нажимает на кнопку "обновить" каждые 5 секунд
     setInterval(function () {
         $('.dialog-update').trigger("click");
     }, 5000);

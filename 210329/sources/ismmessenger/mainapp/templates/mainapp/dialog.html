@@ -15,20 +15,23 @@
             <a href="{% url 'main:delete_dialog' dialog.id %}" class="btn btn-danger">Удалить</a>
         </div>
     </div>
-{#    {% for item in dialog.get_messages_all %}#}
-{#        <div class="card mt-3" id="demo">#}
-{#            <div class="card-header message-{{ item.pk }}">#}
-{#                {{ item.sender.member.username }} {{ item.created }}#}
-{#            </div>#}
-{#            <div class="card-body">#}
-{#                <p>{{ item.text|linebreaksbr }}</p>#}
-{#            </div>#}
-{#        </div>#}
-{#    {% endfor %}#}
-    {% for item in dialog.get_messages_all %}
-        <ul class="list-group">
-            <li class="list-group-item mt-2 message-{{ item.pk }}">{{ item.sender.member.username }} ({{ item.created }})
+    {#    {% for item in dialog.get_messages_all %}#}
+    {#        <div class="card mt-3" id="demo">#}
+    {#            <div class="card-header message-{{ item.pk }}">#}
+    {#                {{ item.sender.member.username }} {{ item.created }}#}
+    {#            </div>#}
+    {#            <div class="card-body">#}
+    {#                <p>{{ item.text|linebreaksbr }}</p>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    {% endfor %}#}
+    <ul class="list-group messages-list">
+        {% for item in dialog.get_messages_all %}
+            <li class="list-group-item mt-2 message-{{ item.pk }}">{{ item.sender.member.username }}
+                ({{ item.created }})
                 | {{ item.text|linebreaksbr }}</li>
-        </ul>
-    {% endfor %}
+        {% endfor %}
+    </ul>
+
+
 {% endblock %}
