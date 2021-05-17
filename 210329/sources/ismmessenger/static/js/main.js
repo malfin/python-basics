@@ -25,7 +25,6 @@ window.onload = function () {
                 let new_messages = response.new_messages
                 if (new_messages) {
                     new_messages.forEach(function (el, idx) {
-                        // console.log(idx, el);
                         messageRender(el);
                     })
                 }
