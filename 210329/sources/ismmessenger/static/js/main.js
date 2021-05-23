@@ -30,8 +30,9 @@ window.onload = function () {
                 }
             }
         })
-    })
+    });
     setInterval(function () {
-        $('.dialog-update').trigger("click");
+        console.log('update');
+        $('a.dialog-update').trigger("click");
     }, 5000);
 }
