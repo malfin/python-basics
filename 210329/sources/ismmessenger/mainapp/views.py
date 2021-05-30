@@ -1,44 +1,45 @@
-from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.views.generic import CreateView
 
 from mainapp.forms import DialogMessageForm
-from mainapp.models import Dialog, Message, DialogMemebers
+from mainapp.models import Dialog, DialogMemebers, Message
 
 
 @login_required
 def index(request):
-    dialogues = request.user.dialogs.all()
+    dialogues = request.user.dialogs.select_related('dialog').all()
     context = {
-        'title': 'главная',
+        'title': 'диалоги',
         'dialogues': dialogues,
     }
+
     return render(request, 'mainapp/index.html', context)
 
 
-@login_required
 def dialog_show(request, dialog_pk):
     dialog = get_object_or_404(Dialog, pk=dialog_pk)
     sender = dialog.get_sender(request.user.pk)
+
     context = {
-        'title': 'Диалоги',
+        'title': 'диалог',
         'dialog': dialog,
         'sender': sender,
     }
+
     return render(request, 'mainapp/dialog.html', context)
 
 
-@login_required
 def create_dialog(request):
     dialogues = request.user.dialogs.select_related('dialog').all(). \
         values_list('dialog_id', flat=True)
     interlocutors = DialogMemebers.objects.filter(dialog__in=dialogues). \
         values_list('member_id', flat=True)
     new_interlocutors = User.objects.exclude(pk__in=interlocutors)
+
     context = {
         'title': 'новый диалог',
         'new_interlocutors': new_interlocutors,
@@ -46,7 +47,6 @@ def create_dialog(request):
     return render(request, 'mainapp/create_dialog.html', context)
 
 
-@login_required()
 def user_dialog_create(request, user_id):
     interlocutor = User.objects.get(pk=user_id)
     dialog = Dialog.objects.create(
@@ -62,9 +62,16 @@ def user_dialog_create(request, user_id):
         member=interlocutor,
         role=DialogMemebers.INTERLOCUTOR
     )
+
     return HttpResponseRedirect(
         reverse('main:dialog_show', kwargs={'dialog_pk': dialog.pk})
     )
+
+
+def delete_dialog(request, pk):
+    instance = get_object_or_404(Dialog, pk=pk)
+    instance.delete()
+    return HttpResponseRedirect(reverse('main:index'))
 
 
 class DialogMessageCreate(CreateView):
@@ -94,22 +101,19 @@ def dialog_new_messages(request, dialog_pk):
         if dialog:
             status = True
             _new_messages = dialog.get_messages_new(request.user.pk)
-            new_messages = [{'pk': el.pk,
-                             'username': el.sender.member.username,
-                             'created': el.created.strftime('%Y.%m.%d %H:%M'),
-                             'text': el.text}
-                            for el in _new_messages]
+            new_messages = [
+                {'pk': el.pk,
+                 'username': el.sender.member.username,
+                 'created': el.created.strftime('%Y.%m.%d %H:%M'),
+                 'text': el.text}
+                for el in _new_messages
+            ]
+            if _new_messages.update(read=True):
+                return JsonResponse({
+                    'status': status,
+                })
+
         return JsonResponse({
             'status': status,
             'new_messages': new_messages,
         })
-
-
-@login_required()
-def delete_dialog(request, message_id):
-    item = get_object_or_404(Dialog, id=message_id)
-    item.delete()
-    messages.success(request, "Вы успешно удалили диалог!")
-    return HttpResponseRedirect(
-        reverse('main:index')
-    )
