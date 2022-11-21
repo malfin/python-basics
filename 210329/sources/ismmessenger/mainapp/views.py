@@ -117,3 +117,4 @@ def dialog_new_messages(request, dialog_pk):
             'status': status,
             'new_messages': new_messages,
         })
+    return HttpResponseRedirect(reverse('main:dialog_show', kwargs={'dialog_pk': dialog_pk}))
